@@ -375,3 +375,139 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 `raise`关键字用于抛出异常：
 
 	raise ValueError("A value error happened.")
+
+## 类
+
+Python中的类通常用如下定义：
+
+	class MyClass(parent_class):
+    	statements
+		...
+其中，如果该类不需要继承自其他类时，需要继承自`object`类
+
+而使用该类定义对象只需要如下操作：
+
+	x = MyClass()
+
+### 构造函数
+
+Python的类中可以使用`__init__()`函数，该函数等同于C++的构造函数：
+
+	def __init__(self):
+    	self.data = []
+
+其中`self`是必加的，它类似于C++中的`this`
+
+### 删除对象
+
+假设定义一个对象为`s`，则删除它需要使用的语句为：
+
+	del s
+
+### 属性读取方法
+
+在Python中，不需要去定义其属性；读取的时候也只需要直接读取就行（不需要特地写个`getName()`之类的方法）：
+
+	>>> class Student(object):
+	...     def __init__(self, name):
+	...         self.name = name
+	...
+	>>> std = Student("Kushal Das")
+	>>> print(std.name)
+	Kushal Das
+	>>> std.name = "Python"
+	>>> print(std.name)
+	Python
+
+### 装饰器
+
+在Python中，如果需要更加明确地声明类中的方法，可以使用装饰器`@property`：
+
+	#!/usr/bin/env python3
+	
+	class Account(object):
+	    """账号类,
+	    amount 是美元金额.
+	    """
+	    def __init__(self, rate):
+	        self.__amt = 0
+	        self.rate = rate
+	
+	    @property
+	    def amount(self):
+	        """账号余额（美元）"""
+	        return self.__amt
+	
+	    @property
+	    def cny(self):
+	        """账号余额（人名币）"""
+	        return self.__amt * self.rate
+	
+	    @amount.setter
+	    def amount(self, value):
+	        if value < 0:
+	            print("Sorry, no negative amount in the account.")
+	            return
+	        self.__amt = value
+	
+	if __name__ == '__main__':
+	    acc = Account(rate=6.6) # 基于课程编写时的汇率
+	    acc.amount = 20
+	    print("Dollar amount:", acc.amount)
+	    print("In CNY:", acc.cny)
+	    acc.amount = -100
+	    print("Dollar amount:", acc.amount)
+
+## 模块
+
+一个Python程序本身就可以作为一个模块
+其中的函数或类在别的程序import它之后就可以使用了
+而在一个文件夹中加入`__init__.py`的文件之后，这个文件夹就会成为一个包
+
+## collections模块
+
+`collections`模块是Python的一个内建模块，其中提供了一些例如`sort`之类的常用方法
+
+### Counter类
+
+`Counter`类用于进行对字符等进行计数：
+
+	>>> from collections import Counter
+	>>> c = Counter(a=4, b=2, c=0, d=-2)
+	>>> list(c.elements())
+	['b','b','a', 'a', 'a', 'a']
+	>>> Counter('abracadabra').most_common(3)
+	[('a', 5), ('r', 2), ('b', 2)]
+
+### defaultdict类
+
+事实上就是一个扩展的`dict`  
+由于`dict`不支持像C++的map一样在键缺省时自动创建（会报错），所以就有了`defaultdict`：
+
+	>>> from collections import defaultdict
+	>>> s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+	>>> d = defaultdict(list)
+	>>> for k, v in s:
+	...     d[k].append(v)
+	...
+	>>> d.items()
+	dict_items([('blue', [2, 4]), ('red', [1]), ('yellow', [1, 3])])
+
+### namedtuple类
+
+顾名思义，就是带命名的元组：
+
+	>>> from collections import namedtuple
+	>>> Point = namedtuple('Point', ['x', 'y'])  # 定义命名元组
+	>>> p = Point(10, y=20)  # 创建一个对象
+	>>> p
+	Point(x=10, y=20)
+	>>> p.x + p.y
+	30
+	>>> p[0] + p[1]  # 像普通元组那样访问元素
+	30
+	>>> x, y = p     # 元组拆封
+	>>> x
+	10
+	>>> y
+	20
