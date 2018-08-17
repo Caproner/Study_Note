@@ -419,45 +419,6 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 	>>> print(std.name)
 	Python
 
-### 装饰器
-
-在Python中，如果需要更加明确地声明类中的方法，可以使用装饰器`@property`：
-
-	#!/usr/bin/env python3
-	
-	class Account(object):
-	    """账号类,
-	    amount 是美元金额.
-	    """
-	    def __init__(self, rate):
-	        self.__amt = 0
-	        self.rate = rate
-	
-	    @property
-	    def amount(self):
-	        """账号余额（美元）"""
-	        return self.__amt
-	
-	    @property
-	    def cny(self):
-	        """账号余额（人名币）"""
-	        return self.__amt * self.rate
-	
-	    @amount.setter
-	    def amount(self, value):
-	        if value < 0:
-	            print("Sorry, no negative amount in the account.")
-	            return
-	        self.__amt = value
-	
-	if __name__ == '__main__':
-	    acc = Account(rate=6.6) # 基于课程编写时的汇率
-	    acc.amount = 20
-	    print("Dollar amount:", acc.amount)
-	    print("In CNY:", acc.cny)
-	    acc.amount = -100
-	    print("Dollar amount:", acc.amount)
-
 ## 模块
 
 一个Python程序本身就可以作为一个模块
@@ -511,3 +472,109 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 	10
 	>>> y
 	20
+
+## 迭代器
+
+在Python的类中可以选择重写迭代器，也就是`__iter__()`方法和`__next__()`方法  
+重写之后就可以使用`for`循环遍历该类的对象了    
+`__iter__()`方法需要返回自身（`self`）  
+`__next__()`方法需要返回其下一个元素，如果已经是最后一个元素的话则抛出`StopIteration`异常
+
+	class Counter(object):
+    def __init__(self, low, high):
+        self.current = low
+        self.high = high
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        #返回下一个值直到当前值大于 high
+        if self.current > self.high:
+            raise StopIteration
+        else:
+            self.current += 1
+            return self.current - 1
+
+使用上面的类进行迭代： 
+
+	>>> c = Counter(5,10)
+	>>> for i in c:
+	...   print(i, end=' ')
+	...
+	5 6 7 8 9 10 
+
+## 生成器
+
+在Python的函数中，可以使用`yield`返回一些值  
+不同于`return`的是，`yield`返回值之后函数并不会终止运行，而是继续运行下去  
+也就是说，这个函数可以返回不只一个值，此时这个函数就是一个生成器  
+作为生成器的函数可以像迭代器一样用`for`循环进行遍历：
+
+	>>> def counter_generator(low, high):
+	...     while low <= high:
+	...        yield low
+	...        low += 1
+	... 
+	>>> for i in counter_generator(5,10):
+	...     print(i, end=' ')
+	... 
+	5 6 7 8 9 10
+
+## 闭包
+
+闭包可以看做是函数中的函数，它可以用作返回值将其返回出去给外部用：
+
+	>>> def add_number(num):
+	...     def adder(number):
+	...         #adder 是一个闭包
+	...         return num + number
+	...     return adder
+	...
+	>>> a_10 = add_number(10)
+	>>> a_10(21)
+	31
+	>>> a_10(34)
+	44
+	>>> a_5 = add_number(5)
+	>>> a_5(3)
+	8
+
+## 装饰器
+
+在Python中，如果需要更加明确地声明类中的方法，可以使用装饰器`@property`：
+
+	#!/usr/bin/env python3
+	
+	class Account(object):
+	    """账号类,
+	    amount 是美元金额.
+	    """
+	    def __init__(self, rate):
+	        self.__amt = 0
+	        self.rate = rate
+	
+	    @property
+	    def amount(self):
+	        """账号余额（美元）"""
+	        return self.__amt
+	
+	    @property
+	    def cny(self):
+	        """账号余额（人民币）"""
+	        return self.__amt * self.rate
+	
+	    @amount.setter
+	    def amount(self, value):
+	        if value < 0:
+	            print("Sorry, no negative amount in the account.")
+	            return
+	        self.__amt = value
+	
+	if __name__ == '__main__':
+	    acc = Account(rate=6.6) # 基于课程编写时的汇率
+	    acc.amount = 20
+	    print("Dollar amount:", acc.amount)
+	    print("In CNY:", acc.cny)
+	    acc.amount = -100
+	    print("Dollar amount:", acc.amount)
