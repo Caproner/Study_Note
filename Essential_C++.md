@@ -53,7 +53,7 @@
 			return end;
 		}
 		```
-+ Function Object（函数对象）
++ Function Object（函数对象）  
 	指一类仅重载了`()`的类  
 	可以用于`sort()`等算法中的参数（例如说`sort(v.begin(), v.end(), greater<int>)`），也可以用于自行设计泛型算法时用到  
 	在标准库`functional`中就有15个已经预先定义好的function object：
@@ -75,7 +75,7 @@
 		+ `logical_and<type>`：`x&&y`
 		+ `logical_or<type>`：`x||y`
 		+ `logical_not<type>`：`!x`
-+ Function Object Adapter（函数对象适配器）
++ Function Object Adapter（函数对象适配器）  
 	有时候以上15种并不能够满足我们的需求，这个时候就需要adapter来对其做一些改变，使其能满足我们的需求
 	+ binder adapter（绑定适配器）：
 		+ 将二元的function object的一些参数进行一个绑定，使其降为一元
@@ -91,7 +91,7 @@
 		+ 作用是将function object的结果取反
 		+ `not1()`的作用是对一元的function object取反
 		+ `not2()`的作用是对二元的function object取反
-+ Iterator Inserter
++ Iterator Inserter  
 	在泛型编程中，往往会遇到需要将列表输出的情况。这个时候一般的是使用列表指针来进行操作：
 		template <typename OutputIterator>
 		OutputIterator fun(OutputIterator at)
@@ -115,7 +115,7 @@
 	+ `front_inserter()`：以`push_front()`的形式将返回值加入到容器中：
 			deque<int> d;
 			fun(front_inserter(d));
-+ Iostream Iterator
++ Iostream Iterator  
 	假定现在有一个这样的函数：
 		template <typename InputIterator, typename OutputIterator>
 		OutputIterator Copy(InputIterator   begin,
@@ -130,7 +130,7 @@
 			return at;
 		}
 	它的功能很简单，就是复制一个列表到另一个列表  
-	但是使用如下Iostream Iterator之后，可以将其修改为从输入中复制，或是从现有列表中输出
+	但是使用如下Iostream Iterator之后，可以将其修改为从输入中复制，或是从现有列表中输出  
 	如果需要文件输入或文件输出的话，只需要修改初始化时使用的流即可
 	+ `istream_iterator<type>`：
 			int a[20];
