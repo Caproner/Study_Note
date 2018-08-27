@@ -14,13 +14,13 @@
 ## 第2章 面向过程的编程风格
 
 ### 模板函数
-	```
+
 	template <typename elemType>
 	void fun(elemType a, vector<elemType> v)
 	{
 		//...
 	}
-	```
+
 ### 函数指针
 + 定义：`int (*fun)(int, int);`
 	+ 如果是函数指针数组的话则是`int (*fun[])(int, int);`
@@ -95,8 +95,10 @@
 	+ 有两种binder adapter：
 		+ bind1st：绑定第一个参数
 			+ 例如说，返回该数被5减后的数的function object，就需要将`minus<type>`做一些改动：
+			
 					minus<int> lt;
 					bind1st(lt, 5);	//返回我们所需要的function object，当然这句这么用本身是无效的
+
 		+ bind2nd：绑定第二个参数，使用方法同上
 + negator adapter（否定适配器）：
 	+ 作用是将function object的结果取反
@@ -124,14 +126,20 @@
 这个时候就需要使用Iterator Inserter  
 Iterator Inserter分成以下几种：
 + `back_inserter()`：以`push_back()`的形式将返回值加入到容器中：
+
 		vector<int> v;
 		fun(back_inserter(v));
+
 + `inserter()`：以`insert()`的形式将返回值加入到容器中：
+		
 		vector<int> v;
 		fun(inserter(v,v.end()));	//第二个参数是insert的位置
+
 + `front_inserter()`：以`push_front()`的形式将返回值加入到容器中：
+		
 		deque<int> d;
 		fun(front_inserter(d));
+
 
 
 ### Iostream Iterator  
@@ -155,12 +163,16 @@ Iterator Inserter分成以下几种：
 但是使用如下Iostream Iterator之后，可以将其修改为从输入中复制，或是从现有列表中输出  
 如果需要文件输入或文件输出的话，只需要修改初始化时使用的流即可
 + `istream_iterator<type>`
+		
 		int a[20];
 		istream_iterator<int> input(cin);
 		istream_iterator<int> eof;	//若对其未做初始化则默认为EOF
 		Copy(input, eof, a);	//将输入赋值给数组a
+
 + `ostream_iterator<type>`
+		
 		int a[20];
 		//省略对a的赋值操作
 		ostream_iterator<int> output(cout, " ")	//后面的字符串用于规定其分隔符
 		Copy(a, a+20, output);	//将数组a输出
+
