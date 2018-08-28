@@ -15,11 +15,13 @@
 
 ### 模板函数
 
-	template <typename elemType>
-	void fun(elemType a, vector<elemType> v)
-	{
-		//...
-	}
+```c++
+template <typename elemType>
+void fun(elemType a, vector<elemType> v)
+{
+	//...
+}
+```
 
 ### 函数指针
 + 定义：`int (*fun)(int, int);`
@@ -47,20 +49,22 @@
 这些指针与普通的指针差不多，均可以进行取值，自增，自减，比较是否相等  
 于是便可以使用模板函数进行一些泛型算法的设计：（以`find`为例）  
 
-	template <typename IteratorType, typename ElemType>
-	IteratorType find(IteratorType     begin, 
-		              IteratorType     end, 
-		              const ElemType&  elem)
+```c++
+template <typename IteratorType, typename ElemType>
+IteratorType find(IteratorType     begin, 
+	              IteratorType     end, 
+	              const ElemType&  elem)
+{
+	for(IteratorType it = begin; it != end; it++)
 	{
-		for(IteratorType it = begin; it != end; it++)
+		if((*it) == elem)
 		{
-			if((*it) == elem)
-			{
-				return it;
-			}
+			return it;
 		}
-		return end;
 	}
+	return end;
+}
+```
 
 ### Function Object（函数对象）  
 
@@ -109,70 +113,84 @@
 
 在泛型编程中，往往会遇到需要将列表输出的情况。这个时候一般的是使用列表指针来进行操作：
 
-	template <typename OutputIterator>
-	OutputIterator fun(OutputIterator at)
-	{
-		for(int i=0;i<10;i++)
-			*at++ = i;
-		return at;
-	}
+```c++
+template <typename OutputIterator>
+OutputIterator fun(OutputIterator at)
+{
+	for(int i=0;i<10;i++)
+		*at++ = i;
+	return at;
+}
+```
 
 对于数组来说，调用这个函数只需要传入其指针就行了：
 
-	int a[15];
-	fun(a);
+```c++
+int a[15];
+fun(a);
+```
 
 但是对于vector之类的容器来说，由于不知道其中会产生多大的列表，所以比较棘手  
 这个时候就需要使用Iterator Inserter  
 Iterator Inserter分成以下几种：
 + `back_inserter()`：以`push_back()`的形式将返回值加入到容器中：
 
-		vector<int> v;
-		fun(back_inserter(v));
+   ```c++
+   vector<int> v;
+   fun(back_inserter(v));
+   ```
 
 + `inserter()`：以`insert()`的形式将返回值加入到容器中：
-		
-		vector<int> v;
-		fun(inserter(v,v.end()));	//第二个参数是insert的位置
+
+   ```c++
+   vector<int> v;
+   fun(inserter(v,v.end()));	//第二个参数是insert的位置
+   ```
 
 + `front_inserter()`：以`push_front()`的形式将返回值加入到容器中：
-		
-		deque<int> d;
-		fun(front_inserter(d));
 
-
+  ```c++
+  deque<int> d;
+  fun(front_inserter(d));
+  ```
 
 ### Iostream Iterator  
 
 假定现在有一个这样的函数：
 
-	template <typename InputIterator, typename OutputIterator>
-	OutputIterator Copy(InputIterator   begin,
-	                    InputIterator   end,
-	                    OutputIterator  at)
+```c++
+template <typename InputIterator, typename OutputIterator>
+OutputIterator Copy(InputIterator   begin,
+                    InputIterator   end,
+                    OutputIterator  at)
+{
+	InputIterator it = begin;
+	while(it != end)
 	{
-		InputIterator it = begin;
-		while(it != end)
-		{
-			*at++ = *it++;
-		}
-		return at;
+		*at++ = *it++;
 	}
+	return at;
+}
+```
 
 它的功能很简单，就是复制一个列表到另一个列表  
 但是使用如下Iostream Iterator之后，可以将其修改为从输入中复制，或是从现有列表中输出  
 如果需要文件输入或文件输出的话，只需要修改初始化时使用的流即可
-+ `istream_iterator<type>`
-		
-		int a[20];
-		istream_iterator<int> input(cin);
-		istream_iterator<int> eof;	//若对其未做初始化则默认为EOF
-		Copy(input, eof, a);	//将输入赋值给数组a
++ `istream_iterator<type>`	
+
+   ```c++
+   int a[20];
+   istream_iterator<int> input(cin);
+   istream_iterator<int> eof;	//若对其未做初始化则默认为EOF
+   Copy(input, eof, a);	//将输入赋值给数组a
+   ```
 
 + `ostream_iterator<type>`
-		
-		int a[20];
-		//省略对a的赋值操作
-		ostream_iterator<int> output(cout, " ")	//后面的字符串用于规定其分隔符
-		Copy(a, a+20, output);	//将数组a输出
+
+   ```c++
+   int a[20];
+   //省略对a的赋值操作
+   ostream_iterator<int> output(cout, " ")	//后面的字符串用于规定其分隔符
+   Copy(a, a+20, output);	//将数组a输出
+   ```
 

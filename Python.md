@@ -8,61 +8,79 @@
 
 Python使用的注释格式与C++、Java不同：
 
-	# 这是一行注释
+```python
+# 这是一行注释
+```
 
 或者做一些形如C++中常用的TODO注释：
 
-	# FIXME -- fix these code later
-	# TODO -- in future you have to do this
+```python
+# FIXME -- fix these code later
+# TODO -- in future you have to do this
+```
 
 
 ## 输入输出
 
 输入使用`input()`函数：
 
-	a = int(input("Please input a integer: "))
-	b = float(float("Please input a number: "))
+```python
+a = int(input("Please input a integer: "))
+b = float(float("Please input a number: "))
+```
 
 输出使用`print()`函数进行格式化输出：
 
-	print("Year {} Rs. {:.2f}".format(year, value))
-	print("{:7.2f}".format(test))	# 7表示整个数字占7个字符，右对齐，空格补全
+```python
+print("Year {} Rs. {:.2f}".format(year, value))
+print("{:7.2f}".format(test))	# 7表示整个数字占7个字符，右对齐，空格补全
+```
 
 其中`print()`函数可以通过`end`控制输出结尾为其他字符而非空格
 
-	print("{}".format(a), end = " ")
+```python
+print("{}".format(a), end = " ")
+```
 
 以及直接使用乘法进行连续输出：
 	
-	print("-" * 50)
+```python
+print("-" * 50)
+```
 
 ## 多个赋值
 
-	>>> a , b = 45, 54
-	>>> a
-	45
-	>>> b
-	54
-	>>> a, b = b, a    # 可以用此法交换数值
-	>>> a
-	54
-	>>> b
-	45
+```python
+>>> a , b = 45, 54
+>>> a
+45
+>>> b
+54
+>>> a, b = b, a    # 可以用此法交换数值
+>>> a
+54
+>>> b
+45
+```
 
 ## 除与整除
 
 Python中对除和整除有明确的区分：
 
-	>>> 3 / 2
-	1.5
-	>>> 3 // 2
-	1
+```python
+>>> 3 / 2
+1.5
+>>> 3 // 2
+1
+```
 
 如果需要同时获取整除商和余数可以使用`divmod()`函数  
 `divmod(a, b)`返回一个`(a // b, a % b)`的元组：
 
-	a = 50
-	print("{}, {}".format(*divmod(a, 30)))	# divmod前面的“*”表示将divmod返回的元组进行拆封
+```python
+a = 50
+print("{}, {}".format(*divmod(a, 30)))	# divmod前面的“*”表示将divmod返回的元组进行拆封
+```
 
 ## 逻辑运算符
 
@@ -70,12 +88,14 @@ Python使用的是`and`、`or`、`not`，而不是`&&`、`||`、`!`
 
 ## 条件语句
 
-	if ep1:
-		...
-	elif ep2:
-		...
-	else:
-		...
+```python
+if ep1:
+	...
+elif ep2:
+	...
+else:
+	...
+```
 
 ## 列表
 
@@ -83,82 +103,98 @@ Python使用的是`and`、`or`、`not`，而不是`&&`、`||`、`!`
 
 Python中使用方括号定义列表：
 
-	a = [1, 342, 223, 'India', 'Fedora']
+```python
+a = [1, 342, 223, 'India', 'Fedora']
+```
 
 ### 访问
 
 它可以像C语言中的数组一样访问
 
-	>>> a[0]
-	1
-	>>> a[4]
-	'Fedora'
+```python
+>>> a[0]
+1
+>>> a[4]
+'Fedora'
+```
 
 也可以直接使用负数逆向访问：
 
-	>>> a[-1]
-	'Fedora'
+```python
+>>> a[-1]
+'Fedora'
+```
 
 ### 列表切片
 
 Python中的列表可以使用切片提取部分：
 
-	>>> a[0:-1]
-	[1, 342, 223, 'India']
-	>>> a[2:-2]
-	[223]
-	>>> a[:]
-	[1, 342, 223, 'India', 'Fedora']
-	>>> a[:-2]
-	[1, 342, 223]
-	>>> a[-2:]
-	['India', 'Fedora']
+```python
+>>> a[0:-1]
+[1, 342, 223, 'India']
+>>> a[2:-2]
+[223]
+>>> a[:]
+[1, 342, 223, 'India', 'Fedora']
+>>> a[:-2]
+[1, 342, 223]
+>>> a[-2:]
+['India', 'Fedora']
+```
 
 切片可以允许第三个参数，表示步长：
 
-	>>> a[1::2]     # 此处省略第二个参数，表示从a[1]开始到最后，每两个取一个
-	[342, 'India']
-	>>> a[::-1]     # 这么做可以反转列表
-	['Fedora', 'India', 223, 342, 1]
+```python
+>>> a[1::2]     # 此处省略第二个参数，表示从a[1]开始到最后，每两个取一个
+[342, 'India']
+>>> a[::-1]     # 这么做可以反转列表
+['Fedora', 'India', 223, 342, 1]
+```
 
 列表可以直接对切片赋值，从而达到改变长度、批量操作之类的目的：
 
-	>>> letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
-	>>> letters
-	['a', 'b', 'c', 'd', 'e', 'f', 'g']
-	>>> # 替换某些值
-	>>> letters[2:5] = ['C', 'D', 'E']
-	>>> letters
-	['a', 'b', 'C', 'D', 'E', 'f', 'g']
-	>>> # 现在移除他们
-	>>> letters[2:5] = []
-	>>> letters
-	['a', 'b', 'f', 'g']
-	>>> # 通过替换所有元素为空列表来清空这个列表
-	>>> letters[:] = []
-	>>> letters
-	[]
+```python
+>>> letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+>>> letters
+['a', 'b', 'c', 'd', 'e', 'f', 'g']
+>>> # 替换某些值
+>>> letters[2:5] = ['C', 'D', 'E']
+>>> letters
+['a', 'b', 'C', 'D', 'E', 'f', 'g']
+>>> # 现在移除他们
+>>> letters[2:5] = []
+>>> letters
+['a', 'b', 'f', 'g']
+>>> # 通过替换所有元素为空列表来清空这个列表
+>>> letters[:] = []
+>>> letters
+[]
+```
 
 ### 列表的连接
 
 列表可以直接使用加法连接两个列表：
 
-	>>> a + [36, 49, 64, 81, 100]
-	[1, 342, 223, 'India', 'Fedora', 36, 49, 64, 81, 100]
+```python
+>>> a + [36, 49, 64, 81, 100]
+[1, 342, 223, 'India', 'Fedora', 36, 49, 64, 81, 100]
+```
 
 ### 多维列表
 
 列表允许嵌套，此时便是类似于多维数组的存在（准确的说应该是多维不定长的vector）
 
-	>>> a = ['a', 'b', 'c']
-	>>> n = [1, 2, 3]
-	>>> x = [a, n]
-	>>> x
-	[['a', 'b', 'c'], [1, 2, 3]]
-	>>> x[0]
-	['a', 'b', 'c']
-	>>> x[0][1]
-	'b'
+```python
+>>> a = ['a', 'b', 'c']
+>>> n = [1, 2, 3]
+>>> x = [a, n]
+>>> x
+[['a', 'b', 'c'], [1, 2, 3]]
+>>> x[0]
+['a', 'b', 'c']
+>>> x[0][1]
+'b'
+```
 
 ### 列表常用方法
 
@@ -182,12 +218,14 @@ Python中的列表可以使用切片提取部分：
 
 可以使用将for循环写入列表的定义中的方式进行列表的创建：
 
-	>>> squares = [x**2 for x in range(10)]
-	>>> squares
-	[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
-	>>> a = [[x, y] for x in [1, 2, 3] for y in [1, 2, 3] if x != y]
-	>>> a
-	[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]
+```python
+>>> squares = [x**2 for x in range(10)]
+>>> squares
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+>>> a = [[x, y] for x in [1, 2, 3] for y in [1, 2, 3] if x != y]
+>>> a
+[[1, 2], [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]
+```
 
 推导式同样支持嵌套
 
@@ -195,14 +233,16 @@ Python中的列表可以使用切片提取部分：
 
 Python中的for循环与C语言的差别较大：
 
-	>>> a = [1,2,4,6]
-	>>> for i in a:
-	...     print(i)
-	... 
-	1
-	2
-	4
-	6
+```python
+>>> a = [1,2,4,6]
+>>> for i in a:
+...     print(i)
+... 
+1
+2
+4
+6
+```
 
 如上所示，for循环被特化用于遍历一个列表（当然它也可以遍历一个切片）  
 如果需要直接枚举数字的话（例如实现C语言中`for(i=0;i<10;i++)`这样的），可以直接使用`range()`函数  
@@ -210,45 +250,51 @@ Python中的for循环与C语言的差别较大：
 
 `range()`函数的作用如下所示：
 
-	>>> for i in range(5):
-	...     print(i)
-	...
-	0
-	1
-	2
-	3
-	4
-	>>> range(1, 5)      
-	range(1, 5)
-	>>> list(range(1, 5))
-	[1, 2, 3, 4]
-	>>> list(range(1, 15, 3))
-	[1, 4, 7, 10, 13]
-	>>> list(range(4, 15, 2))
-	[4, 6, 8, 10, 12, 14]
+```python
+>>> for i in range(5):
+...     print(i)
+...
+0
+1
+2
+3
+4
+>>> range(1, 5)      
+range(1, 5)
+>>> list(range(1, 5))
+[1, 2, 3, 4]
+>>> list(range(1, 15, 3))
+[1, 4, 7, 10, 13]
+>>> list(range(4, 15, 2))
+[4, 6, 8, 10, 12, 14]
+```
 
 for循环可以直接接else，表示循环终止后需要做的事情（如果是break出来的则不会执行else里的东西）：
 
-	>>> for i in range(0, 5):
-	...     print(i)
-	... else:
-	...     print("Bye bye")
-	...
-	0
-	1
-	2
-	3
-	4
-	Bye bye
+```python
+>>> for i in range(0, 5):
+...     print(i)
+... else:
+...     print("Bye bye")
+...
+0
+1
+2
+3
+4
+Bye bye
+```
 
 ## 元组
 
 元组可以看做是一经定义就不能改变的列表  
 其定义方式为：
 
-	>>> a = 1, 2, 3, 4
-	>>> a
-	(1, 2, 3, 4)
+```python
+>>> a = 1, 2, 3, 4
+>>> a
+(1, 2, 3, 4)
+```
 
 上面提到的多个赋值的方式实际上就是元组的封装和拆封
 
@@ -256,11 +302,13 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 
 集合使用花括号进行定义：
 
-	>>> a = {1, 2, 3, 3}
-	>>> a
-	{1, 2, 3}
-	>>> 1 in a
-	True
+```python
+>>> a = {1, 2, 3, 3}
+>>> a
+{1, 2, 3}
+>>> 1 in a
+True
+```
 
 集合支持`-`（差集），`&`（交集），`|`（并集），`^`（异或）运算
 
@@ -268,24 +316,26 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 
 字典相当于C++中的map，它使用键值对表示一对映射，同样使用花括号进行定义：
 
-	>>> a = {1: 1, 2: 10, 3: 11, 4: 100}
-	>>> a[4]
-	100
-	>>> a
-	{1: 1, 2: 10, 3: 11, 4: 100}
-	>>> a['62'] = 'A'
-	>>> a
-	{1: 1, 2: 10, 3: 11, 4: 100, '62': 'A'}
-	>>> 4 in a
-	True
-	>>> for x, y in a.items():    # 使用items()将其中每个元素转换成元组输出
-	...     print("{} is {}".format(x, y))
-	... 
-	1 is 1
-	2 is 10
-	3 is 11
-	4 is 100
-	62 is A
+```python
+>>> a = {1: 1, 2: 10, 3: 11, 4: 100}
+>>> a[4]
+100
+>>> a
+{1: 1, 2: 10, 3: 11, 4: 100}
+>>> a['62'] = 'A'
+>>> a
+{1: 1, 2: 10, 3: 11, 4: 100, '62': 'A'}
+>>> 4 in a
+True
+>>> for x, y in a.items():    # 使用items()将其中每个元素转换成元组输出
+...     print("{} is {}".format(x, y))
+... 
+1 is 1
+2 is 10
+3 is 11
+4 is 100
+62 is A
+```
 
 ## 字符串
 
@@ -295,33 +345,47 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 ### 字符串常用方法
 
 1. `upper()`：返回其全大写的版本
+
 2. `lower()`：返回其全小写的版本
+
 3. `isalnum()`：判断其是否全由字母和/或数字组成
+
 4. `isdigit()`：判断其是否全是数字
+
 5. `isalpha()`：判断其是否全是字母
+
 6. `isupper()`：判断其是否全是大写
+
 7. `islower()`：判断其是否全是小写
+
 8. `split(c)`：按字符c分割字符串，c缺省时默认按空格分割
+
 9. `join()`：连接字符串，使用方法如下：
-	
-		>>> "-".join("GNU/Linux is great".split())
-		'GNU/Linux-is-great'
-	
+
+    ```python
+    "-".join("GNU/Linux is great".split())
+    'GNU/Linux-is-great'
+    ```
+
 10. `strip(s)`：剥离字符串首尾的所有**包含在字符串s中**的字符
 
-		>>> s = """\         
-		...   what   
-		... the
-		... fuck   
-		... 
-		... """
-		>>> s
-		'  what\nthe\nfuck   \n\n'
-		>>> s.strip()
-		'what\nthe\nfuck'
+    ```python
+    >>> s = """\         
+    ...   what   
+    ... the
+    ... fuck   
+    ... 
+    ... """
+    >>> s
+    '  what\nthe\nfuck   \n\n'
+    >>> s.strip()
+    'what\nthe\nfuck'
+    ```
 
 11. `lstrip(s)`：相对于`strip()`而言，只剥离左边的
+
 12. `rstrip(s)`：相对于`strip()`而言，只剥离右边的
+
 13. `find(s)`：返回字符串中第一个与s相同的子串的下标，如果没有返回-1
 
 ## 函数
@@ -330,18 +394,24 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 
 函数的一般定义形式如下：
 
-	def functionname(params):
-    	statement
+```python
+def functionname(params):
+	statement
+```
 
 例如如下函数：
 
-	def sum(a, b):
-		return a + b
+```python
+def sum(a, b):
+	return a + b
+```
 
 同时，函数支持默认参数：
 
-	def sum(a, b = 10):
-		return a + b
+```python
+def sum(a, b = 10):
+	return a + b
+```
 
 ### 函数中使用全局变量
 
@@ -349,7 +419,9 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 但是在python中，直接使用`a = 2`的话，结果会是创建一个局部变量2并给其赋值为2  
 所以需要在函数中先加入如下语句：
 
-    global a
+```python
+global a
+```
 
 ### 关键字参数
 
@@ -358,13 +430,15 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 
 ### map函数
 
-	>>> lst = [1, 2, 3, 4, 5]
-	>>> def square(num):
-	...     "返回所给数字的平方."
-	...     return num * num
-	...
-	>>> print(list(map(square, lst)))
-	[1, 4, 9, 16, 25]
+```python
+>>> lst = [1, 2, 3, 4, 5]
+>>> def square(num):
+...     "返回所给数字的平方."
+...     return num * num
+...
+>>> print(list(map(square, lst)))
+[1, 4, 9, 16, 25]
+```
 
 ## 异常处理
 
@@ -374,27 +448,35 @@ for循环可以直接接else，表示循环终止后需要做的事情（如果�
 
 `raise`关键字用于抛出异常：
 
-	raise ValueError("A value error happened.")
+```python
+raise ValueError("A value error happened.")
+```
 
 ## 类
 
 Python中的类通常用如下定义：
 
-	class MyClass(parent_class):
-    	statements
-		...
+```python
+class MyClass(parent_class):
+	statements
+	...
+```
 其中，如果该类不需要继承自其他类时，需要继承自`object`类
 
 而使用该类定义对象只需要如下操作：
 
-	x = MyClass()
+```python
+x = MyClass()
+```
 
 ### 构造函数
 
 Python的类中可以使用`__init__()`函数，该函数等同于C++的构造函数：
 
-	def __init__(self):
-    	self.data = []
+```python
+def __init__(self):
+	self.data = []
+```
 
 其中`self`是必加的，它类似于C++中的`this`
 
@@ -402,22 +484,26 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 
 假设定义一个对象为`s`，则删除它需要使用的语句为：
 
-	del s
+```python
+del s
+```
 
 ### 属性读取方法
 
 在Python中，不需要去定义其属性；读取的时候也只需要直接读取就行（不需要特地写个`getName()`之类的方法）：
 
-	>>> class Student(object):
-	...     def __init__(self, name):
-	...         self.name = name
-	...
-	>>> std = Student("Kushal Das")
-	>>> print(std.name)
-	Kushal Das
-	>>> std.name = "Python"
-	>>> print(std.name)
-	Python
+```python
+>>> class Student(object):
+...     def __init__(self, name):
+...         self.name = name
+...
+>>> std = Student("Kushal Das")
+>>> print(std.name)
+Kushal Das
+>>> std.name = "Python"
+>>> print(std.name)
+Python
+```
 
 ## 模块
 
@@ -433,45 +519,51 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 
 `Counter`类用于进行对字符等进行计数：
 
-	>>> from collections import Counter
-	>>> c = Counter(a=4, b=2, c=0, d=-2)
-	>>> list(c.elements())
-	['b','b','a', 'a', 'a', 'a']
-	>>> Counter('abracadabra').most_common(3)
-	[('a', 5), ('r', 2), ('b', 2)]
+```python
+>>> from collections import Counter
+>>> c = Counter(a=4, b=2, c=0, d=-2)
+>>> list(c.elements())
+['b','b','a', 'a', 'a', 'a']
+>>> Counter('abracadabra').most_common(3)
+[('a', 5), ('r', 2), ('b', 2)]
+```
 
 ### defaultdict类
 
 事实上就是一个扩展的`dict`  
 由于`dict`不支持像C++的map一样在键缺省时自动创建（会报错），所以就有了`defaultdict`：
 
-	>>> from collections import defaultdict
-	>>> s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
-	>>> d = defaultdict(list)
-	>>> for k, v in s:
-	...     d[k].append(v)
-	...
-	>>> d.items()
-	dict_items([('blue', [2, 4]), ('red', [1]), ('yellow', [1, 3])])
+```python
+>>> from collections import defaultdict
+>>> s = [('yellow', 1), ('blue', 2), ('yellow', 3), ('blue', 4), ('red', 1)]
+>>> d = defaultdict(list)
+>>> for k, v in s:
+...     d[k].append(v)
+...
+>>> d.items()
+dict_items([('blue', [2, 4]), ('red', [1]), ('yellow', [1, 3])])
+```
 
 ### namedtuple类
 
 顾名思义，就是带命名的元组：
 
-	>>> from collections import namedtuple
-	>>> Point = namedtuple('Point', ['x', 'y'])  # 定义命名元组
-	>>> p = Point(10, y=20)  # 创建一个对象
-	>>> p
-	Point(x=10, y=20)
-	>>> p.x + p.y
-	30
-	>>> p[0] + p[1]  # 像普通元组那样访问元素
-	30
-	>>> x, y = p     # 元组拆封
-	>>> x
-	10
-	>>> y
-	20
+```python
+>>> from collections import namedtuple
+>>> Point = namedtuple('Point', ['x', 'y'])  # 定义命名元组
+>>> p = Point(10, y=20)  # 创建一个对象
+>>> p
+Point(x=10, y=20)
+>>> p.x + p.y
+30
+>>> p[0] + p[1]  # 像普通元组那样访问元素
+30
+>>> x, y = p     # 元组拆封
+>>> x
+10
+>>> y
+20
+```
 
 ## 迭代器
 
@@ -480,29 +572,33 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 `__iter__()`方法需要返回自身（`self`）  
 `__next__()`方法需要返回其下一个元素，如果已经是最后一个元素的话则抛出`StopIteration`异常
 
-	class Counter(object):
-    def __init__(self, low, high):
-        self.current = low
-        self.high = high
+```python
+class Counter(object):
+def __init__(self, low, high):
+    self.current = low
+    self.high = high
 
-    def __iter__(self):
-        return self
+def __iter__(self):
+    return self
 
-    def __next__(self):
-        #返回下一个值直到当前值大于 high
-        if self.current > self.high:
-            raise StopIteration
-        else:
-            self.current += 1
-            return self.current - 1
+def __next__(self):
+    #返回下一个值直到当前值大于 high
+    if self.current > self.high:
+        raise StopIteration
+    else:
+        self.current += 1
+        return self.current - 1
+```
 
 使用上面的类进行迭代： 
 
-	>>> c = Counter(5,10)
-	>>> for i in c:
-	...   print(i, end=' ')
-	...
-	5 6 7 8 9 10 
+```python
+>>> c = Counter(5,10)
+>>> for i in c:
+...   print(i, end=' ')
+...
+5 6 7 8 9 10 
+```
 
 ## 生成器
 
@@ -511,70 +607,76 @@ Python的类中可以使用`__init__()`函数，该函数等同于C++的构造�
 也就是说，这个函数可以返回不只一个值，此时这个函数就是一个生成器  
 作为生成器的函数可以像迭代器一样用`for`循环进行遍历：
 
-	>>> def counter_generator(low, high):
-	...     while low <= high:
-	...        yield low
-	...        low += 1
-	... 
-	>>> for i in counter_generator(5,10):
-	...     print(i, end=' ')
-	... 
-	5 6 7 8 9 10
+```python
+>>> def counter_generator(low, high):
+...     while low <= high:
+...        yield low
+...        low += 1
+... 
+>>> for i in counter_generator(5,10):
+...     print(i, end=' ')
+... 
+5 6 7 8 9 10
+```
 
 ## 闭包
 
 闭包可以看做是函数中的函数，它可以用作返回值将其返回出去给外部用：
 
-	>>> def add_number(num):
-	...     def adder(number):
-	...         #adder 是一个闭包
-	...         return num + number
-	...     return adder
-	...
-	>>> a_10 = add_number(10)
-	>>> a_10(21)
-	31
-	>>> a_10(34)
-	44
-	>>> a_5 = add_number(5)
-	>>> a_5(3)
-	8
+```python
+>>> def add_number(num):
+...     def adder(number):
+...         #adder 是一个闭包
+...         return num + number
+...     return adder
+...
+>>> a_10 = add_number(10)
+>>> a_10(21)
+31
+>>> a_10(34)
+44
+>>> a_5 = add_number(5)
+>>> a_5(3)
+8
+```
 
 ## 装饰器
 
 在Python中，如果需要更加明确地声明类中的方法，可以使用装饰器`@property`：
 
-	#!/usr/bin/env python3
-	
-	class Account(object):
-	    """账号类,
-	    amount 是美元金额.
-	    """
-	    def __init__(self, rate):
-	        self.__amt = 0
-	        self.rate = rate
-	
-	    @property
-	    def amount(self):
-	        """账号余额（美元）"""
-	        return self.__amt
-	
-	    @property
-	    def cny(self):
-	        """账号余额（人民币）"""
-	        return self.__amt * self.rate
-	
-	    @amount.setter
-	    def amount(self, value):
-	        if value < 0:
-	            print("Sorry, no negative amount in the account.")
-	            return
-	        self.__amt = value
-	
-	if __name__ == '__main__':
-	    acc = Account(rate=6.6) # 基于课程编写时的汇率
-	    acc.amount = 20
-	    print("Dollar amount:", acc.amount)
-	    print("In CNY:", acc.cny)
-	    acc.amount = -100
-	    print("Dollar amount:", acc.amount)
+```python
+#!/usr/bin/env python3
+
+class Account(object):
+    """账号类,
+    amount 是美元金额.
+    """
+    def __init__(self, rate):
+        self.__amt = 0
+        self.rate = rate
+
+    @property
+    def amount(self):
+        """账号余额（美元）"""
+        return self.__amt
+
+    @property
+    def cny(self):
+        """账号余额（人民币）"""
+        return self.__amt * self.rate
+
+    @amount.setter
+    def amount(self, value):
+        if value < 0:
+            print("Sorry, no negative amount in the account.")
+            return
+        self.__amt = value
+
+if __name__ == '__main__':
+    acc = Account(rate=6.6) # 基于课程编写时的汇率
+    acc.amount = 20
+    print("Dollar amount:", acc.amount)
+    print("In CNY:", acc.cny)
+    acc.amount = -100
+    print("Dollar amount:", acc.amount)
+```
