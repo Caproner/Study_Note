@@ -9,7 +9,7 @@ UPD：这TM是基础？？？
 ### 零散笔记
 
 + C/C++是无格式语言，也就说可以在语句任意位置（不包括在关键字、函数名）换行
-	+ 这对格式规范十分重要
+  + 这对格式规范十分重要
 + `NULL`的值是0
 + 在编程的时候，需要时刻注意**空指针**所带来的异常
 
@@ -375,5 +375,47 @@ if(typeid(*a) == typeid(base_fun))	// false
 
 ## 第6章 以template进行编程
 
+### 非参数类型
+
+`template`的参数不单单可以是一种类型，还可以是一个常量表达式：
+
+```c++
+template <int len>
+class num_sequence
+{
+public:
+    num_sequence( int beg_pos = 1 );
+    // ...
+};
+
+template <int len>
+class Fibonacci : public num_sequence<len>
+{
+public:
+	Fibonacci( int beg_pos = 1 )
+		: num_sequence<len>( beg_pos ){}
+	// ...
+};
+```
+
+当使用这个类定义对象的时候，便可以这么做：
+
+```c++
+Fibonacci< 17 > fib1;
+Fibonacci< 17 > fib2( 16 );
+```
+
+常量表达式与函数参数一样，也支持默认参数值：
+
+```c++
+template <int len, int beg_pos = 1>
+class num_sequence
+{
+    // ...
+};
+```
+
 ## 第7章 异常处理
+
+### 抛出异常
 
