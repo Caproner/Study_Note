@@ -419,3 +419,27 @@ class num_sequence
 
 ### 抛出异常
 
+C++通过`throw`表达式产生异常：
+
+```c++
+throw 42;
+throw "Warning: Something will bomb";
+```
+
+大部分时候，抛出的异常应该为一个异常类（系统预设的标准异常，或者是自己写的）
+
+### try-catch块
+
+C++中使用try-catch块来做异常处理机制。其会捕获try语句块中的异常，并给catch处理：
+
+```c++
+try
+{
+    // ...
+}
+catch (something_error)
+{
+    // ...
+}
+```
+
