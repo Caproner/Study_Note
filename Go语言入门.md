@@ -252,3 +252,40 @@ func swap(s1, s2 string) (string, string) {
 }
 ```
 
+## 闭包
+
+Go支持闭包函数，也就是在函数内定义一个匿名函数用于返回给外部使用，这种函数就称为闭包函数
+
+闭包函数可以访问和修改其所在的函数内的变量
+
+例如以下代码：
+
+```go
+package main
+
+import "fmt"
+
+func getSequence() func() int {
+   i:=0
+   return func() int {
+      i+=1
+     return i  
+   }
+}
+
+func main(){
+   /* nextNumber 为一个函数，函数 i 为 0 */
+   nextNumber := getSequence()  
+
+   /* 调用 nextNumber 函数，i 变量自增 1 并返回 */
+   fmt.Println(nextNumber())
+   fmt.Println(nextNumber())
+   fmt.Println(nextNumber())
+   
+   /* 创建新的函数 nextNumber1，并查看结果 */
+   nextNumber1 := getSequence()  
+   fmt.Println(nextNumber1())
+   fmt.Println(nextNumber1())
+}
+```
+
