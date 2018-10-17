@@ -1,3 +1,5 @@
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
 # Coursera: Machine Learning
 
 ## 第一周
@@ -39,7 +41,7 @@ $$
 
 整体流程如下图所示：
 
-![1](img\Coursera Machine Learning\1.png)
+![image](img\Coursera Machine Learning\1.png)
 
 大体思路便是，将训练数据扔进学习算法中，由学习算法生成一个函数h，然后待标记的数据集x经由函数h得到预测结果y
 
