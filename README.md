@@ -16,7 +16,7 @@ emmmm。。没啥好看的。。
 + Coursera: Machine Learning
   + 目前的主推，工作上一点用都没有，完全出于兴趣
 
-## 预定要推的
+## 预定可能要推的
 
 + 统计学习方法
 + 机器学习：西瓜书
@@ -25,3 +25,5 @@ emmmm。。没啥好看的。。
 + 代码大全
 + 编程之美
 + Tensorflow
++ Data Science系列
++ Deep Learning系列
