@@ -27,3 +27,4 @@ emmmm。。没啥好看的。。
 + Tensorflow
 + Data Science系列
 + Deep Learning系列
++ 具体数学
