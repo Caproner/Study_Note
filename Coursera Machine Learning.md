@@ -311,3 +311,191 @@ $$
 
 不过一般求矩阵的逆的时候使用的是求其**伪逆矩阵**，所以即使是不可逆的矩阵也是可以求逆的
 
+## 第3周
+
+### Classification and Representation
+
+#### 逻辑回归
+
+逻辑回归用于解决二分类问题。其函数形式为：
+$$
+h_\theta(x)={\frac 1 {1+e^{-z}}}
+$$
+其中z为线性回归函数：
+$$
+z=\theta^Tx
+$$
+其原型函数为：
+$$
+g(x)={\frac 1 {1+e^{-x}}}
+$$
+其图像为：
+
+![2](img/Coursera Machine Learning/2.png)
+
+
+
+故其值在大部分情况下要么趋近于0，要么趋近于1。故其适合用于二分类问题
+
+而在这里逻辑回归函数的值表示的意义为，当值为x的时候，y=1的概率
+
+#### 决策边界
+
+事实上令函数z=0所表示的曲线便是决策边界
+
+将逻辑回归的结果中的z以z=0的形式画出来，可以得到一个曲线，在曲线的一侧(z>0)便是y=1的决策，另一侧(z<0)便是y=0的决策
+
+### Logistic Regression Model
+
+#### 代价函数
+
+在线性回归中使用的代价函数为：
+$$
+J(\theta)={\frac {1} {2m}}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2
+$$
+其可以写作如下形式：
+$$
+\begin{cases}
+J(\theta)={\frac {1} {m}}\sum_{i=1}^{m}cost(h_\theta(x^{(i)}),y^{(i)})
+\\
+cost(h_\theta(x),y)={\frac {1} {2}}(h_{\theta}(x)-y)^2
+\end{cases}
+$$
+此时函数J可以看做是求cost函数的平均数，而cost函数求的便是平方误差
+
+（以下情况均为只有一个theta且x和y为随机生成（但保证y必定为0或1）的情况下的theta-J曲线）
+
+如果是在线性回归的情况的话，对其使用梯度下降是可行的，因为其函数是凸的：
+
+![3](F:\github\Study_Note\img\Coursera Machine Learning\3.png)
+
+但如果函数h为逻辑回归函数，则有可能出现函数非凸的情况：
+
+![4](F:\github\Study_Note\img\Coursera Machine Learning\4.png)
+
+可以看出，右边那块单调递减，如果梯度下降的起点在10这个位置的话，则梯度下降会滑向右边
+
+所以需要修改cost函数为如下形式：
+$$
+cost(h_\theta(x),y)=
+\begin{cases}
+-\log(h_\theta(x)), & \text {if y=1}
+\\
+-\log(1-h_\theta(x)), & \text {if y=0}
+\end{cases}
+$$
+或者直接简写成如下形式：
+$$
+cost(h_\theta(x),y)=-y\log(h_\theta(x))-(1-y)\log(1-h_\theta(x))
+$$
+此时的函数图像近似于线性回归的梯度下降的图像：
+
+![5](F:\github\Study_Note\img\Coursera Machine Learning\5.png)
+
+于是该函数便可以用于逻辑回归的梯度下降
+
+于是完整的代价函数J为：
+$$
+\begin{align}
+J(\theta)&={\frac {1} {m}}\sum_{i=1}^{m}(-y^{(i)}\log(h_\theta(x^{(i)}))-(1-y^{(i)})\log(1-h_\theta(x^{(i)})))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}(y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-h_\theta(x^{(i)})))
+\end{align}
+$$
+
+#### 梯度下降
+
+类比线性回归，逻辑回归的梯度下降法也是一样的：
+$$
+{\theta_j}:={\theta_j}-\alpha{\frac {\partial}{\partial\theta_j}}J(\theta)
+$$
+现在对J求导：
+
+首先，有：
+$$
+\begin{align}
+\log(1-h_\theta(x^{(i)}))&=\log({\frac {e^{-\theta^Tx^{(i)}}} {1+e^{-\theta^Tx^{(i)}}}})
+\\
+&=-\theta^Tx^{(i)}+\log(h_\theta(x^{(i)}))
+\end{align}
+$$
+故可以将J简化如下：
+$$
+\begin{align}
+J(\theta)
+&=-{\frac {1} {m}}\sum_{i=1}^{m}(y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})\log(1-h_\theta(x^{(i)})))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}(y^{(i)}\log(h_\theta(x^{(i)}))+(1-y^{(i)})(-\theta^Tx^{(i)}+\log(h_\theta(x^{(i)}))))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}(y^{(i)}\log(h_\theta(x^{(i)}))+(-\theta^Tx^{(i)}+\log(h_\theta(x^{(i)})))-y^{(i)}(-\theta^Tx^{(i)}+\log(h_\theta(x^{(i)}))))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}((y^{(i)}-1)\theta^Tx^{(i)}+\log(h_\theta(x^{(i)})))
+\end{align}
+$$
+为了简化后续的计算，先对函数h求导：
+$$
+\begin{align}
+{\frac {\partial}{\partial\theta_j}}h_\theta(x)
+&={\frac {\partial}{\partial\theta_j}}{\frac {1} {1+e^{-\theta^Tx}}}
+\\
+&=-{\frac {1} {(1+e^{-\theta^Tx})^2}}\cdot{\frac {\partial}{\partial\theta_j}}{(1+e^{-\theta^Tx})}
+\\
+&=-{\frac {e^{-\theta^Tx}} {(1+e^{-\theta^Tx})^2}}\cdot{\frac {\partial}{\partial\theta_j}}{(-\theta^Tx)}
+\\
+&={\frac {e^{-\theta^Tx}} {(1+e^{-\theta^Tx})^2}}\cdot{x_j}
+\\
+&=h_\theta(x)\cdot(1-h_\theta(x))\cdot{x_j}
+\end{align}
+$$
+于是：
+$$
+\begin{align}
+{\frac {\partial}{\partial\theta_j}}J(\theta)
+&=-{\frac {1} {m}}\sum_{i=1}^{m}{\frac {\partial}{\partial\theta_j}}((y^{(i)}-1)\theta^Tx^{(i)}+\log(h_\theta(x^{(i)})))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}({\frac {\partial}{\partial\theta_j}}(y^{(i)}-1)\theta^Tx^{(i)}+{\frac {\partial}{\partial\theta_j}}\log(h_\theta(x^{(i)})))
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}((y^{(i)}-1)x^{(i)}_j+{\frac {{\frac {\partial}{\partial\theta_j}}h_\theta(x^{(i)})} {h_\theta(x^{(i)})}})
+\\
+&=-{\frac {1} {m}}\sum_{i=1}^{m}((y^{(i)}-1)x^{(i)}_j+(1-h_\theta(x^{(i)}))\cdot{x^{(i)}_j})
+\\
+&={\frac {1} {m}}\sum_{i=1}^{m}((h_\theta(x^{(i)})-y^{(i)}){x^{(i)}_j})
+\end{align}
+$$
+最终会得到一个很有趣的结论：在无视函数h自身的计算的情况下，逻辑回归的梯度下降跟线性回归是完全一致的
+$$
+\theta_j:=\theta_j-
+{\frac {\alpha} {m}}
+\sum_{i=1}^{m}((h_{\theta}(x^{(i)})-y^{(i)})x^{(i)}_j)
+$$
+虽然事实上是为了令其一致而构造出了新的cost函数
+
+#### 高级优化算法
+
+事实上，求代价函数的最小值有比梯度下降更为优秀的算法，但是其实在是过于复杂，而且在Octave中有对应的库可以调用，所以只需要知道怎么用即可
+
+要用这个，首先需要写一个代价函数：
+
+```octave
+function [jVal, gradient] = costFunction(theta)
+  jVal = [...code to compute J(theta)...];
+  gradient = [...code to compute derivative of J(theta)...];
+end
+```
+
+其中，`theta`便是参数，`jVal`指的是J(θ)的值，而gradient则是梯度向量，也就是对于每个参数的偏导组成的向量
+
+然后在主程序中只需要做如下调用：
+
+```octave
+options = optimset('GradObj', 'on', 'MaxIter', 100);
+initialTheta = zeros(2,1);
+[optTheta, functionVal, exitFlag] = fminunc(@costFunction, initialTheta, options);
+```
+
+其中`options`为一些配置选项，返回值中：
+
++ `optTheta`为最终收敛的参数向量
++ `functionVal`为该向量计算出来的J(θ)
++ `exitFlag`表示是否收敛
+
