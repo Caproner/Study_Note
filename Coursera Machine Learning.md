@@ -367,11 +367,11 @@ $$
 
 如果是在线性回归的情况的话，对其使用梯度下降是可行的，因为其函数是凸的：
 
-![3](F:\github\Study_Note\img\Coursera Machine Learning\3.png)
+![3](img\Coursera Machine Learning\3.png)
 
 但如果函数h为逻辑回归函数，则有可能出现函数非凸的情况：
 
-![4](F:\github\Study_Note\img\Coursera Machine Learning\4.png)
+![4](img\Coursera Machine Learning\4.png)
 
 可以看出，右边那块单调递减，如果梯度下降的起点在10这个位置的话，则梯度下降会滑向右边
 
@@ -390,7 +390,7 @@ cost(h_\theta(x),y)=-y\log(h_\theta(x))-(1-y)\log(1-h_\theta(x))
 $$
 此时的函数图像近似于线性回归的梯度下降的图像：
 
-![5](F:\github\Study_Note\img\Coursera Machine Learning\5.png)
+![5](img\Coursera Machine Learning\5.png)
 
 于是该函数便可以用于逻辑回归的梯度下降
 
@@ -622,7 +622,7 @@ $$
 
 神经元为一个神经网络的单位，也叫作逻辑单元（激励单元）：
 
-![6](F:\github\Study_Note\img\Coursera Machine Learning\6.png)
+![6](img\Coursera Machine Learning\6.png)
 
 每个逻辑单元事实上可以看做是一个逻辑回归
 
@@ -632,7 +632,7 @@ $$
 
 而神经网络模型事实上就是由多个神经元拼起来的模型：
 
-![7](F:\github\Study_Note\img\Coursera Machine Learning\7.png)
+![7](img\Coursera Machine Learning\7.png)
 
 其中第一层为输入层，第二层为隐藏层，第三层为输出层
 
@@ -679,7 +679,7 @@ $$
 
 对于多分类问题，要么就套用逻辑回归的思路，建立多个神经网络，要么就将神经网络的输出层设为k个而不是1个，于是输出便不再是一个数，而是一个向量，用于表示其属于某个分类的概率：
 
-![8](F:\github\Study_Note\img\Coursera Machine Learning\8.png)
+![8](img\Coursera Machine Learning\8.png)
 
 ## 第5周
 
@@ -735,10 +735,14 @@ $$
 
 
 
+
+
 + 令：
   $$
   \Delta^{(l)}_{ij}=0\ {\text {for all i,j,l}}
   $$
+
+
 
 
 
@@ -750,6 +754,8 @@ $$
     $$
     a^{(1)}=x^{(i)}
     $$
+
+
 
 
 
@@ -771,10 +777,14 @@ $$
 
 
 
+
+
   + 更新Δ：
     $$
     \Delta^{(l)}:=\Delta^{(l)}+\delta^{(l+1)}(a^{(l)})^T
     $$
+
+
 
 
 
@@ -793,10 +803,14 @@ $$
 
 
 
+
+
 + 于是就可以得出：
   $$
   {\frac {\partial} {{\partial}\Theta^{(l)}_{ij}}}J(\Theta)=D^{(l)}_{ij}
   $$
+
+
 
 
 
