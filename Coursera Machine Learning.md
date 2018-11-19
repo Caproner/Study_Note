@@ -862,3 +862,17 @@ Theta2 = rand(10,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
 Theta3 = rand(1,11) * (2 * INIT_EPSILON) - INIT_EPSILON;
 ```
 
+## 第6周
+
+### Evaluating a Learning Algorithm
+
+#### 检验误差
+
+比较通用的方法是，将手头上的数据按照7:3的比例，分成训练集和验证集。
+
+于是误差便可以分为训练集误差和验证集误差。
+
+在回归问题中，误差可以直接使用代价函数来代替。
+
+而在逻辑回归中，有一种比代价函数更加直接的方法就是直接计算正确率。
+
