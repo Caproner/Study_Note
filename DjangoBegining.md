@@ -34,7 +34,7 @@
 
 创建好之后的项目架构如下图所示：
 
-![Django项目初始架构](img\DjangoBegining\1.png)
+<img src=img/DjangoBegining/1.png />
 
 + `manage.py`：Django项目的主要命令工具
 + `PersonalWeb/settings.py`：Django项目的后台配置
@@ -64,12 +64,12 @@
 + 在`mysite`中注册`frontend`包
   + 打开`mysite/settings.py`，找到下图的代码，并添加`frontend`进去（如红框所示）
 
-![frontend包注册](img\DjangoBegining\2.png)
+<img src=img/DjangoBegining/2.png />
 
 + 配置`mysite`的路由，将其全部转发到`frontend`进去
   + 打开`mysite/urls.py`，找到下图的代码，并添加红框中的代码进去（针对url和include的解释详见说明部分）
 
-![配置mysite路由](img\DjangoBegining\3.png)
+<img src=img/DjangoBegining/3.png />
 
 + 打开`mysite/settings.py`，将变量`DATABASES`改为如下代码：
 
