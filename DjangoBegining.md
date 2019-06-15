@@ -308,3 +308,212 @@ def hello_world(request):
 
 这里要做的是部署进程管理软件suervisor，用于监控Django进程，以及使用Django的日志功能。
 
+### 步骤
+
+#### supervisor
+
+直接`yum install`即可
+
+主要命令有：
+
++ `supervisord -c /etc/supervisord.conf `：指定配置文件开启
++ `supervisorctl shutdown`：关闭supervisor
++ `supervisorctl status`：查看所有进程的状态
++ `supervisorctl stop es`：停止es
++ `supervisorctl start es`：启动es
++ `supervisorctl restart es`: 重启es
++ `supervisorctl update`：配置文件修改后可以使用该命令加载新的配置
++ `supervisorctl reload`: 重新启动配置中的所有程序
+
+需要修改的配置有：
+
++ 打开`/etc/supervisord.conf`，将最后的`[include]`改一下（个人习惯而已）：
+
+```
+[include]
+files = relative/directory/*.conf
+```
+
++ 在`/etc/supervisord.d/`里新建文件`PersonalWeb.conf`，并添加如下内容：
+
+```
+[program:PersonalWeb]
+environment=PYTHON_EGG_CACHE=/tmp/.python-eggs/,MODE=DEV
+directory=/home/caproner/data/release/PersonalWeb
+command=gunicorn -c gun_config.py
+
+mysite.wsgi:application -t 1200
+user=caproner
+autorestart=true
+redirect_stderr=true
+```
+
+#### 项目配置
+
++ `pip install gunicorn`
++ `pip install gevent`
++ 切换回开发机，在`PersonalWeb`目录下新建文件`gun_config.py`，然后添加如下内容：
+
+```python
+# -*- coding: utf-8 -*- #
+
+proc_name = 'PersonalWeb'
+# sync/gevent
+worker_class = 'gevent'
+bind = ['127.0.0.1:8000']
+#bind = ['0.0.0.0:17333']
+workers = 4
+```
+
+同步到服务器，然后使用supervisor启动进程`PersonalWeb`，就可以访问了。
+
+#### 日志
+
++ 在开发机下的目录`frontend/share/`下新建文件`logs.py`，并添加如下内容：
+
+```python
+# -*- coding: utf-8 -*-
+import logging
+
+
+logger = logging.getLogger('main')
+```
+
++ 然后追加一些log的配置到`mysite/settings.py`中（以下是追加内容）：
+
+```python
+# log setting
+MAIN_LOG_FILE_PATH = os.path.join(BASE_DIR, "logs/main.log")
+DJANGO_LOG_FILE_PATH = os.path.join(BASE_DIR, "logs/django.log")
+MARKDOWN_LOG_FILE_PATH = os.path.join(BASE_DIR, "logs/markdown.log")
+
+LOG_FORMAT = '\n'.join((
+    '/' + '-' * 80,
+    '[%(levelname)s][%(asctime)s][%(process)d:%(thread)d][%(filename)s:%(lineno)d %(funcName)s]:',
+    '%(message)s',
+    '-' * 80 + '/',
+))
+
+if DEBUG:
+    MAIN_LOG_LEVEL = 'DEBUG'
+else:
+    MAIN_LOG_LEVEL = 'ERROR'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+
+    'formatters': {
+        'standard': {
+            'format': LOG_FORMAT,
+        },
+    },
+
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.CallbackFilter',
+            'callback': lambda x: DEBUG,
+        }
+    },
+    'handlers': {
+        'flylog': {
+            'level': 'CRITICAL',
+            'class': 'flylog.FlyLogHandler',
+            'formatter': 'standard',
+            'source': os.path.basename(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+            'role_list': ['default'],
+        },
+        'main_file': {
+            'level': MAIN_LOG_LEVEL,
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': MAIN_LOG_FILE_PATH,
+            'maxBytes': 1024*1024*500,
+            'backupCount': 5,
+            'formatter': 'standard',
+            },
+        'django_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': DJANGO_LOG_FILE_PATH,
+            'maxBytes': 1024*1024*500,
+            'backupCount': 5,
+            'formatter': 'standard',
+        },
+        'console': {
+            'level': 'DEBUG',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        'maple_flylog': {
+            'level': 'ERROR',
+            'class': 'flylog.FlyLogHandler',
+            'formatter': 'standard',
+            'source': os.path.basename(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
+        },
+        'markdown': {
+            'level': MAIN_LOG_LEVEL,
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': MARKDOWN_LOG_FILE_PATH,
+            'maxBytes': 1024*1024*500,
+            'backupCount': 5,
+            'formatter': 'standard',
+        }
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['django_file', 'maple_flylog'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'main': {
+            'handlers': ['console', 'main_file', 'flylog'],
+            'level': MAIN_LOG_LEVEL,
+            'propagate': False
+        },
+        'MARKDOWN': {
+            'handlers': ['console', 'markdown', 'flylog'],
+            'level': MAIN_LOG_LEVEL,
+            'propagate': False
+        }
+    }
+}
+```
+
++ 同步到服务器，然后在服务器上的`release/PersonalWeb/`目录下新建文件夹`logs`
+
++ 启动，没有报错的话就完事了
+
+### 说明
+
+#### supervisor的配置文件
+
+这里主要说明针对特定项目的配置文件`/etc/supervisord.d/PersonalWeb.conf`
+
++ `directory`：指定进程所在的目录，这里我们需要指定的是`gun_config.py`所在的目录
++ `command`：指定进程启动命令，这里使用的是`gunicorn`来启动Django
++ `user`：指定进程执行用户
++ `autorestart`：显然我们需要服务端能在crash的时候自动重启
+
+其他的可以自行查找，选项比较多，按需取即可。
+
+#### gun-config.py配置说明
+
++ `proc_name`：进程名
++ `bind = ['127.0.0.1:8000']`：绑定Django启动端口为8000
+
+#### 如何使用日志
+
++ 在需要使用日志的代码引入`share.logs`文件中的`logger`函数
++ 需要打日志的话直接用`logger.debug("Debug in %s[%s]", args, kwargs)`这样的格式
+  + 跟c++的`printf`很像，区别在于`%s`可以表示任何类型
