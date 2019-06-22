@@ -245,7 +245,7 @@ urlpatterns = [
 from django.http import HttpResponse
 from django.views.generic.base import View
 from django.shortcuts import render
-from .share.utils import safe_int
+from share.utils import safe_int
 
 
 class HelloWorldView(View):
@@ -260,7 +260,7 @@ def hello_world(request):
 
 + 在`views.py`中引用了一个函数`safe_int()`，我们需要将这个函数和其所在包补上
 
-  + 在`frontend`文件夹中新建文件夹`share`，并在`share`中新建`__init__.py`和`utils.py`
+  + 在`PersonalWeb`文件夹中新建文件夹`share`，并在`share`中新建`__init__.py`和`utils.py`
 
   + 在`utils.py`中补上如下代码：
 
@@ -369,7 +369,7 @@ workers = 4
 
 #### 日志
 
-+ 在开发机下的目录`frontend/share/`下新建文件`logs.py`，并添加如下内容：
++ 在开发机下的目录`share/`下新建文件`logs.py`，并添加如下内容：
 
 ```python
 # -*- coding: utf-8 -*-
@@ -517,3 +517,8 @@ LOGGING = {
 + 在需要使用日志的代码引入`share.logs`文件中的`logger`函数
 + 需要打日志的话直接用`logger.debug("Debug in %s[%s]", args, kwargs)`这样的格式
   + 跟c++的`printf`很像，区别在于`%s`可以表示任何类型
+
+## 其他参考过的资料
+
++ 用户系统：https://www.jianshu.com/p/033217dbfe25
++ 
