@@ -98,8 +98,8 @@ Go语言的常量只需要将变量前面的`var`换成`const`修饰符就行了
 ```go
 const (
 	a = iota	// 此时iota=0，故a=iota=0
-	b			// 此时iota=1，故b=iota=0
-	c			// 此时iota=2，故c=iota=0
+	b			// 此时iota=1，故b=iota=1
+	c			// 此时iota=2，故c=iota=2
 )
 ```
 
